@@ -10,9 +10,9 @@ const CoinCard = ({ id, name, img, symbol,price,currencySymbol }) => {
                     "&:hover": {
                         transform: "scale(1.06)",
                         boxShadow: "0",
-                        filter: "drop-shadow(16px 16px 20px blue)"
+                        filter: "drop-shadow(16px 16px 20px grey)"
                     }
-                }}>
+                }} bgColor={"gray.400"}>
                 <Image src={img} w={'10'} h={"10"} objectFit={"contain"} alt={"Exchange"} />
                 <Heading size={"md"} noOfLines={1}>
                     {symbol}

@@ -4,9 +4,9 @@ import React from 'react';
 const Loader = () => {
   return (
     <VStack h={"90vh"} justifyContent={"center"}
-    alignItems={"center"}>
+    alignItems={"center"} >
       <Box transform={"scale(3)"}>
-      <Spinner size={"xl"}>
+      <Spinner size={"xl"} color={"white"}>
         Loading...
       </Spinner>
       </Box>

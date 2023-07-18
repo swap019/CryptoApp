@@ -1,0 +1,10 @@
+.exchange-page {
+    background-color: #0F1624; /* Deep fade blue */
+    border: none;
+    
+    .search-exchange {
+      padding: 20px  ;
+      padding-top: 30px; /* Example border style */
+    }
+  }
+  

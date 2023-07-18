@@ -5,13 +5,16 @@ import { Container, HStack, Button, RadioGroup, Radio } from '@chakra-ui/react';
 import Loader from "./Loader";
 import ErrorComponent from "./ErrorComponent";
 import CoinCard from './CoinCard';
+import {Input} from "antd";
+import "../app.css"
+
 const Coins = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
   const [currency, setCurrency] = useState("inr");
-
+  const [searchTerm, setSearchTerm] = useState('');
   const currencySymbol = currency === "inr" ? "₹" : currency === "eur" ? "€" : "$";
   const changePage = (page) => {
     setPage(page);
@@ -24,7 +27,8 @@ const Coins = () => {
     const fetchCoins = async () => {
       try {
         const { data } = await axios.get(`${server}/coins/markets?vs_currency=${currency}&page=${page}`);
-        setCoins(data);
+        const filteredData = data.filter((item) => item.name.toLowerCase().includes(searchTerm));
+        setCoins(filteredData);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -33,18 +37,27 @@ const Coins = () => {
 
     };
     fetchCoins();
-  }, [currency, page]);
+  }, [currency, page ,searchTerm]);
 
   if (error)
     return <ErrorComponent message={"Error Fetching Data"} />
 
   return (
+    <div className='exchange-page'>
     <Container maxW={"container.xl"}>
       {loading ? <Loader /> : (
         <>
-          <RadioGroup value={currency} onChange={setCurrency}>
+        <Container>
+        <div className="search-exchange">
+          <Input
+            placeholder="Search Cryptocurrency"
+            onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+          />
+        </div>
+        </Container>
+          <RadioGroup value={currency} onChange={setCurrency} color={"whiteAlpha.900"}>
             <HStack spacing={"4"} padding={"8"} borderTop={"10vh"}>
-              <Radio value={"inr"}>
+              <Radio value={"inr"} >
                 INR
               </Radio>
               <Radio value={"eur"} >
@@ -55,7 +68,7 @@ const Coins = () => {
               </Radio>
             </HStack>
           </RadioGroup>
-          <HStack wrap={"wrap"}>
+          <HStack wrap={"wrap"} justifyContent={'space-evenly'}>
             {
               coins.map((i) => (
                 <CoinCard
@@ -70,7 +83,8 @@ const Coins = () => {
               ))
             }
           </HStack>
-          <HStack w={"full"} overflowX={"auto"} padding={"8"}>
+          {
+            (searchTerm.length>1)?<></> :<HStack w={"full"} overflowX={"auto"} padding={"8"}>
             {
               btns.map((item, index) => (
                 <Button
@@ -81,10 +95,12 @@ const Coins = () => {
               ))
             }
           </HStack>
+          }
 
         </>
       )}
     </Container>
+    </div>
   )
 }
 
